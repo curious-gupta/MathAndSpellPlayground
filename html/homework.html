@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Problems Sheet</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #ffeb3b;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            font-size: 28px;
+            color: #ff5722;
+        }
+        #studentInfo {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        #studentInfo input {
+            width: 150px;
+            margin-right: 10px;
+            padding: 5px;
+            border: 2px solid #ff5722;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        label {
+            font-size: 16px;
+        }
+        #apiResult {
+            margin-top: 20px;
+            padding: 10px;
+        }
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            justify-items: center;
+            margin-top: 20px;
+        }
+        .problem {
+            font-size: 22px;
+            text-align: center;
+            line-height: 1.6;
+            background-color: #e1f5fe;
+            border: 2px solid #29b6f6;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+        }
+        .equation {
+            text-align: right;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ff5722;
+        }
+        .underline {
+            text-decoration: underline;
+            display: inline-block;
+            width: 80px;
+            height: 2px;
+            background-color: black; /* Underline with solid line */
+            margin: 10px 0;
+        }
+        .answers {
+            font-size: 12px;
+            color: gray;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .operator {
+            color: #ff5722;
+            font-weight: bold;
+        }
+        #answers h3 {
+            color: #ff5722;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .problem-grid {
+                grid-template-columns: repeat(2, 1fr); /* Change to 2 columns on smaller screens */
+                gap: 10px;
+            }
+            button {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+            h2 {
+                font-size: 24px;
+            }
+            .problem {
+                font-size: 20px;
+                padding: 8px;
+            }
+            #studentInfo input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .problem-grid {
+                grid-template-columns: 1fr; /* Change to 1 column on extra small screens */
+            }
+            h2 {
+                font-size: 20px;
+            }
+            .problem {
+                font-size: 18px;
+            }
+            button {
+                width: 100%;
+                font-size: 14px;
+            }
+            #studentInfo {
+                text-align: center;
+            }
+            #studentInfo input {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+
+        /* Print specific styles */
+        @media print {
+            body {
+                background-color: white;
+                color: #333;
+            }
+            header {
+                text-align: left;
+                margin-bottom: 20px;
+                background-color: #ffeb3b;
+                padding: 10px;
+                border-radius: 10px;
+                box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            }
+            header h2 {
+                font-size: 24px;
+                color: #ff5722;
+            }
+            #studentInfo {
+                display: block;
+                margin-bottom: 10px;
+                color: #333;
+            }
+            #studentInfo input {
+                border: 1px solid #ff5722;
+                background-color: #fff3e0;
+                border-radius: 5px;
+                padding: 5px;
+                width: 150px;
+            }
+            .problem-grid {
+                grid-template-columns: repeat(3, 1fr); /* Force 3 columns when printing */
+                gap: 15px;
+            }
+            .problem {
+                font-size: 20px;
+                padding: 10px;
+                background-color: #e1f5fe;
+                border: 2px solid #29b6f6;
+                border-radius: 10px;
+                box-shadow: none;
+                position: relative;
+                text-align: center;
+            }
+            .equation {
+                margin-bottom: 10px; /* Space before the underline */
+            }
+            .underline {
+                display: block;
+                width: 100px;
+                height: 2px;
+                background-color: black; /* Solid line underline */
+                margin: 0 auto; /* Center the underline */
+            }
+            button, label, #showAnswers {
+                display: none; /* Hide buttons and checkboxes during printing */
+            }
+            .answers {
+                font-size: 16px;
+                color: gray;
+                display: block;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Math Problem Worksheet</h2>
+        <div id="studentInfo">
+            Name: <input type="text" placeholder="Student Name">
+            Date: <input type="text" placeholder="Date">
+            Score: <input type="text" placeholder="Score">
+        </div>
+    </header>
+
+    <button onclick="showPopup()">Generate Math Problems</button>
+
+    <label>
+        <input type="checkbox" id="showAnswers"> Show answers in print
+    </label>
+
+    <div id="apiResult">
+        <!-- API response will be displayed here -->
+    </div>
+
+    <button onclick="printPDF()">Print to PDF</button>
+
+    <div id="answers" class="hidden">
+        <h3>Answers</h3>
+        <div id="answersContent"></div>
+    </div>
+
+    <script>
+        function showPopup() {
+            const numOfAdditions = prompt("Enter the number of additions:");
+            const numOfSubtractions = prompt("Enter the number of subtractions:");
+            const numberOfDigits = prompt("Enter the number of digits:");
+
+            if (numOfAdditions && numOfSubtractions && numberOfDigits) {
+                fetchApiData(numOfAdditions, numOfSubtractions, numberOfDigits);
+            } else {
+                alert("Please fill in all the values.");
+            }
+        }
+
+        async function fetchApiData(numOfAdditions, numOfSubtractions, numberOfDigits) {
+            const apiUrl = `http://localhost:5001/problems?num_of_additions=${numOfAdditions}&num_of_subtractions=${numOfSubtractions}&number_of_digits=${numberOfDigits}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                const data = await response.json();
+                displayProblems(data.results);
+            } catch (error) {
+                document.getElementById('apiResult').innerText = 'Error fetching data: ' + error;
+            }
+        }
+
+        function displayProblems(problems) {
+            const apiResultDiv = document.getElementById('apiResult');
+            const answersDiv = document.getElementById('answersContent');
+            apiResultDiv.innerHTML = ''; // Clear previous results
+            answersDiv.innerHTML = ''; // Clear previous answers
+
+            const gridDiv = document.createElement('div');
+            gridDiv.classList.add('problem-grid');
+
+            problems.forEach(problem => {
+                const problemDiv = document.createElement('div');
+                problemDiv.classList.add('problem');
+                problemDiv.innerHTML = `
+                    <div class="equation">
+                        ${problem.num1}<br>
+                        <span class="operator">${problem.operation === 'addition' ? '+' : '-'}</span> ${problem.num2}<br>
+                        <div class="underline"></div> <!-- Underline below the equation -->
+                    </div>
+                `;
+                gridDiv.appendChild(problemDiv);
+
+                // Append the answer in hidden small text
+                const answerDiv = document.createElement('div');
+                answerDiv.innerText = `${problem.num1} ${problem.operation === 'addition' ? '+' : '-'} ${problem.num2} = ${problem.result}`;
+                answersDiv.appendChild(answerDiv);
+            });
+
+            apiResultDiv.appendChild(gridDiv);
+        }
+
+        function printPDF() {
+            const showAnswers = document.getElementById('showAnswers').checked;
+            const answersDiv = document.getElementById('answers');
+
+            if (showAnswers) {
+                answersDiv.classList.remove('hidden');
+            } else {
+                answersDiv.classList.add('hidden');
+            }
+
+            window.print();
+        }
+    </script>
+
+</body>
+</html>
