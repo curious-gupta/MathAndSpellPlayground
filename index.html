@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Problems Sheet</title>
     <style>
+        /* Styles remain unchanged */
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background-color: #f0f8ff;
@@ -81,7 +82,7 @@
             display: inline-block;
             width: 80px;
             height: 2px;
-            background-color: black; /* Underline with solid line */
+            background-color: black;
             margin: 10px 0;
         }
         .answers {
@@ -102,15 +103,15 @@
 
         /* Modal styling */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none;
+            position: fixed;
+            z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
+            background-color: rgba(0, 0, 0, 0.4);
         }
         .modal-content {
             background-color: #fff;
@@ -163,10 +164,9 @@
             background-color: #45a049;
         }
 
-        /* Mobile responsiveness */
         @media (max-width: 768px) {
             .problem-grid {
-                grid-template-columns: repeat(2, 1fr); /* Change to 2 columns on smaller screens */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
             button {
@@ -188,7 +188,7 @@
 
         @media (max-width: 480px) {
             .problem-grid {
-                grid-template-columns: 1fr; /* Change to 1 column on extra small screens */
+                grid-template-columns: 1fr;
             }
             h2 {
                 font-size: 20px;
@@ -209,13 +209,12 @@
             }
         }
 
-        /* Print specific styles */
         @media print {
             body {
                 background-color: white;
             }
             .problem-grid {
-                grid-template-columns: repeat(3, 1fr); /* Force 3 columns when printing */
+                grid-template-columns: repeat(3, 1fr);
                 gap: 15px;
             }
             .problem {
@@ -248,7 +247,7 @@
                 font-weight: bold;
             }
             button, label, #showAnswers {
-                display: none; /* Hide buttons and checkboxes during printing */
+                display: none;
             }
             .answers {
                 font-size: 16px;
@@ -261,7 +260,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <h2>Math Problem Worksheet</h2>
         <div id="studentInfo">
@@ -271,7 +269,8 @@
         </div>
     </header>
 
-  <button onclick="showPopup()">Generate Math Problems</button>
+    <button onclick="showPopup()">Generate Math Problems</button>
+    <button onclick="showSpellingsPopup()">Generate Spellings</button>
 
     <label>
         <input type="checkbox" id="showAnswers"> Show answers in print
@@ -300,6 +299,12 @@
                 <label for="subtractions">Number of Subtractions:</label>
                 <input type="number" id="subtractions" name="subtractions" placeholder="Subtractions">
 
+                <label for="multiplications">Number of Multiplications:</label>
+                <input type="number" id="multiplications" name="multiplications" placeholder="Multiplications">
+
+                <label for="divisions">Number of Divisions:</label>
+                <input type="number" id="divisions" name="divisions" placeholder="Divisions">
+
                 <label for="digits">Number of Digits:</label>
                 <input type="number" id="digits" name="digits" placeholder="Digits">
 
@@ -309,73 +314,92 @@
     </div>
 
     <script>
-    // Get the modal, button, close button, and form
-    var modal = document.getElementById("problemModal");
-    var openModalButton = document.querySelector("button[onclick='showPopup()']");
-    var closeModalButton = document.querySelector(".close-btn");
-    var form = document.getElementById("problemForm");
+        var modal = document.getElementById("problemModal");
+        var openModalButton = document.querySelector("button[onclick='showPopup()']");
+        var closeModalButton = document.querySelector(".close-btn");
+        var form = document.getElementById("problemForm");
 
-    // When the user clicks the button, open the modal
-    openModalButton.onclick = function() {
-        modal.style.display = "block";
-    }
+        openModalButton.onclick = function() {
+            modal.style.display = "block";
+        }
 
-    // When the user clicks on <span> (x), close the modal
-    closeModalButton.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // When the user clicks anywhere outside the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
+        closeModalButton.onclick = function() {
             modal.style.display = "none";
         }
-    }
 
-    // Form submission event listener
-    form.addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        // Get values from the input fields
-        var numOfAdditions = document.getElementById("additions").value;
-        var numOfSubtractions = document.getElementById("subtractions").value;
-        var numberOfDigits = document.getElementById("digits").value;
-
-        // Validate input
-        if (numOfAdditions && numOfSubtractions && numberOfDigits) {
-            // Call the API or function to generate math problems
-            fetchApiData(numOfAdditions, numOfSubtractions, numberOfDigits);
-            modal.style.display = "none"; // Close the modal after submission
-        } else {
-            alert("Please fill in all the values.");
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
-    });
-    async function fetchApiData(numOfAdditions, numOfSubtractions, numberOfDigits) {
-        const apiUrl = `https://ip7nw0s528.execute-api.eu-west-1.amazonaws.com/default/problems?num_of_additions=${numOfAdditions}&num_of_subtractions=${numOfSubtractions}&number_of_digits=${numberOfDigits}`;
-        try {
-            const response = await fetch(apiUrl, {
-            method: 'GET', 
-            headers: {
-                'Content-Type': 'application/json',  
-            },
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var numOfAdditions = document.getElementById("additions").value|| 0;
+            var numOfSubtractions = document.getElementById("subtractions").value|| 0;
+            var numOfMultiplications = document.getElementById("multiplications").value|| 0;
+            var numOfDivisions = document.getElementById("divisions").value|| 0;
+            var numberOfDigits = document.getElementById("digits").value|| 0;
+
+            if (numOfAdditions && numOfSubtractions && numOfMultiplications && numOfDivisions && numberOfDigits) {
+                fetchApiData(numOfAdditions, numOfSubtractions, numOfMultiplications, numOfDivisions, numberOfDigits);
+                modal.style.display = "none";
+            } else {
+                alert("Please fill in all the values.");
+            }
         });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+        async function fetchApiData(numOfAdditions=0, numOfSubtractions=0, numOfMultiplications=0, numOfDivisions=0, numberOfDigits=1) {
+            const apiUrl = `https://ip7nw0s528.execute-api.eu-west-1.amazonaws.com/default/problems?num_of_additions=${numOfAdditions}&num_of_subtractions=${numOfSubtractions}&num_of_multiplications=${numOfMultiplications}&num_of_divisions=${numOfDivisions}&number_of_digits=${numberOfDigits}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                displayProblems(data.results);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('There was an error fetching the data.');
             }
-            const data = await response.json();
-            displayProblems(data.results);
-} catch (error) {
-console.error('Fetch error:', error);
-alert('There was an error fetching the data.');
-}
-}
+        }
+
+        async function fetchSpellings(count=1) {
+            const apiUrl = `https://ip7nw0s528.execute-api.eu-west-1.amazonaws.com/default/spellings?number_of_spellings=${count}`; // Replace with the actual API URL
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                const data = await response.json();
+                displaySpellings(data.spellings);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert('There was an error fetching the spellings.');
+            }
+        }
 
         function displayProblems(problems) {
             const apiResultDiv = document.getElementById('apiResult');
             const answersDiv = document.getElementById('answersContent');
-            apiResultDiv.innerHTML = ''; // Clear previous results
-            answersDiv.innerHTML = ''; // Clear previous answers
+            apiResultDiv.innerHTML = '';
+            answersDiv.innerHTML = '';
 
             const gridDiv = document.createElement('div');
             gridDiv.classList.add('problem-grid');
@@ -386,19 +410,28 @@ alert('There was an error fetching the data.');
                 problemDiv.innerHTML = `
                     <div class="equation">
                         ${problem.num1}<br>
-                        <span class="operator">${problem.operation === 'addition' ? '+' : '-'}</span> ${problem.num2}<br>
-                        <div class="underline"></div> <!-- Underline below the equation -->
+                        <span class="operator">${getOperator(problem.operation)}</span> ${problem.num2}<br>
+                        <div class="underline"></div>
                     </div>
                 `;
                 gridDiv.appendChild(problemDiv);
 
-                // Append the answer in hidden small text
                 const answerDiv = document.createElement('div');
-                answerDiv.innerText = `${problem.num1} ${problem.operation === 'addition' ? '+' : '-'} ${problem.num2} = ${problem.result}`;
+                answerDiv.innerText = `${problem.num1} ${getOperator(problem.operation)} ${problem.num2} = ${problem.result}`;
                 answersDiv.appendChild(answerDiv);
             });
 
             apiResultDiv.appendChild(gridDiv);
+        }
+
+        function getOperator(operation) {
+            switch (operation) {
+                case '+': return '+';
+                case '-': return '-';
+                case '*': return 'x';
+                case '/': return '÷';
+                default: return '?';
+            }
         }
 
         function printPDF() {
@@ -414,6 +447,79 @@ alert('There was an error fetching the data.');
             window.print();
         }
     </script>
+
+<!-- Spellings Modal -->
+<div id="spellingsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn spellings-close">&times;</span>
+        <form id="spellingsForm">
+            <h2>Enter Spellings Details</h2>
+            <label for="spellingsCount">Number of Spellings:</label>
+            <input type="number" id="spellingsCount" name="spellingsCount" placeholder="Enter count" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<div id="spellingsResult">
+    <!-- Spellings will be displayed here -->
+</div>
+
+<script>
+// Spellings Modal functionality
+var spellingsModal = document.getElementById("spellingsModal");
+var spellingsButton = document.querySelector("button[onclick='showSpellingsPopup()']");
+var spellingsClose = document.querySelector(".spellings-close");
+var spellingsForm = document.getElementById("spellingsForm");
+
+// Open the modal
+function showSpellingsPopup() {
+    spellingsModal.style.display = "block";
+}
+
+// Close the modal
+spellingsClose.onclick = function() {
+    spellingsModal.style.display = "none";
+}
+
+// Close modal when clicking outside it
+window.onclick = function(event) {
+    if (event.target == spellingsModal) {
+        spellingsModal.style.display = "none";
+    }
+}
+
+// Fetch and display spellings
+spellingsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    // Get input value
+    var spellingsCount = document.getElementById("spellingsCount").value || 0;
+
+    // Validate input
+    if (spellingsCount > 0) {
+        fetchSpellings(spellingsCount);
+        spellingsModal.style.display = "none";
+    } else {
+        alert("Please enter a valid number.");
+    }
+});
+
+
+function displaySpellings(spellings) {
+    const spellingsResultDiv = document.getElementById('spellingsResult');
+    spellingsResultDiv.innerHTML = ''; // Clear previous results
+
+    const list = document.createElement('ol'); // Ordered list
+    spellings.forEach(spelling => {
+        const listItem = document.createElement('li');
+        listItem.textContent = spelling;
+        list.appendChild(listItem);
+    });
+
+    spellingsResultDiv.appendChild(list);
+}
+</script>
 
 </body>
 </html>
