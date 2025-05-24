@@ -218,35 +218,18 @@
                 gap: 15px;
             }
             .problem {
-                font-size: 26px;
+                font-size: 36px;
                 padding: 10px;
                 border: 1px solid black;
                 box-shadow: none;
             }
-            header {
-                text-align: left;
-                margin-bottom: 0;
-                background-color: transparent;
-                padding: 0;
-            }
-            header h2 {
-                font-size: 24px;
-            }
+            header,
             #studentInfo {
-                display: block;
-                margin-bottom: 10px;
+                display: none !important; /* Hides the title and student inputs */
             }
-            #studentInfo input {
-                border: none;
-                border-bottom: 1px solid black;
-                width: auto;
-                padding: 0;
-                display: inline-block;
-                font-size: 14px;
-                color: black;
-                font-weight: bold;
-            }
-            button, label, #showAnswers {
+            button,
+            label,
+            #showAnswers {
                 display: none;
             }
             .answers {
