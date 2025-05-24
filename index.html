@@ -218,7 +218,7 @@
                 gap: 15px;
             }
             .problem {
-                font-size: 20px;
+                font-size: 26px;
                 padding: 10px;
                 border: 1px solid black;
                 box-shadow: none;
@@ -407,11 +407,17 @@
             problems.forEach(problem => {
                 const problemDiv = document.createElement('div');
                 problemDiv.classList.add('problem');
+                let extraLines = '';
+                if (problem.operation === '*') {
+                    extraLines = '<br><br><br>'; // add three extra lines for multiplications
+                }
+                
                 problemDiv.innerHTML = `
                     <div class="equation">
                         ${problem.num1}<br>
                         <span class="operator">${getOperator(problem.operation)}</span> ${problem.num2}<br>
                         <div class="underline"></div>
+                        ${extraLines}
                     </div>
                 `;
                 gridDiv.appendChild(problemDiv);
